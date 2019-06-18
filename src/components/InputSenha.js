@@ -12,8 +12,7 @@ const InputSenha = ({
   style,
   value,
   placeholder
- }) => {
-  return(
+ }) =>
     <View style={style}>
       <TextField
         baseColor={"#8400C5"}
@@ -30,9 +29,6 @@ const InputSenha = ({
         secureTextEntry={true}
       />
     </View>
-
-  );
-};
 
 export default InputSenha;
 

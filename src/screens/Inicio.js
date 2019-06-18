@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Text, FlatList } from 'react-native';
+import { View, ScrollView, Dimensions } from 'react-native';
 import { db } from '../config';
 let salasRef = db.ref('salas/');
 import BotaoNovaSala from '../components/BotaoNovaSala';
@@ -7,8 +7,7 @@ import styles from '../styles/estilos';
 import SemSalas from '../containers/SemSalas';
 import CardSalaVotacao from '../components/CardSalaVotacao';
 import Barra from '../components/Barra';
-import BotaoAlternativa from '../components/BotaoAlternativa';
-import moment from 'moment';
+import moment from 'moment'; 
 
 moment.defineLocale('pt-br', {
   months : 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split('_'),
@@ -57,18 +56,18 @@ moment.defineLocale('pt-br', {
   ordinal : '%dº'
 });
 
+
 export default class Inicio extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      salas: [],
-      alternativas: ['#00E576', 'BALALBLABLALBALLABLLBALALBLABLALBALLABLLBALALBLABLALBALLABLLBALALBLABLALBALLABLL', 'HAUHDASHDIASHDOA'],
-      selected: null
+      salas: []
     }
   }
   static navigationOptions = {
     title: 'Votações disponíveis',
   };
+ 
 
   componentWillMount() {
     salasRef.orderByChild("uid").on('value', snapshot => {
@@ -83,25 +82,19 @@ export default class Inicio extends Component {
     });
   }
 
-  getStatus = (dataFinal, dataInicial, horaFinal, horaInicial) => {
-    // fazer cálculo para retornar se está em andamento, encerrada ou se vai iniciar;
-
+  getStatus = (dataFinal, dataInicial, horaFinal, horaInicial, informacaoExtra) => {
     let firstMoment = moment(`${dataInicial} ${horaInicial}`, 'DD/MM/YYYY HH:mm');
-    let finalMoment = moment(`${dataFinal} ${horaFinal}`,     'DD/MM/YYYY HH:mm');
+    let finalMoment = moment(`${dataFinal} ${horaFinal}`, 'DD/MM/YYYY HH:mm');
     let nowMoment   = moment();
 
-    if(firstMoment.diff(nowMoment)>0){
-      //console.log( 'ag');
-      return 'agendada';
-    }
-    
-    if(finalMoment.diff(nowMoment)>=0){
-      //console.log( 'andam');
-      return 'andamento'
-    }
-    //console.log('enc');
-    return 'encerrada';
+    if(firstMoment.diff(nowMoment)>0)
+      return informacaoExtra? `Disponível ${firstMoment.fromNow()}` : 'agendada';
+    else if(finalMoment.diff(nowMoment)>=0)
+      return informacaoExtra? `Encerra ${finalMoment.fromNow()}` : 'andamento';
+    else
+      return informacaoExtra? finalMoment.format('DD/MM/YYYY HH:mm') : 'encerrada';
   }
+
 
   handleVisualizar = (item) => {
     if (item)
@@ -110,12 +103,8 @@ export default class Inicio extends Component {
       this.props.navigation.navigate('Votacao', { 'sala': 'Não disponível' });
   }
 
-  handleSelect = selected => {
-    this.setState({ selected });
-  }
-
   render() {
-    const { salas, alternativas, selected } = this.state;
+    const { salas } = this.state;
     const { height } = Dimensions.get('screen');
     return (
       <View style={[styles.container, { height: height }]}>
@@ -124,15 +113,21 @@ export default class Inicio extends Component {
             {
               salas.length > 0 ?
                 salas.map((item, index) =>
+                (this.getStatus(item.dataFinal,
+                  item.dataInicial, item.horaFinal,
+                  item.horaInicial)) != 'encerrada'?
                   <CardSalaVotacao
                     key={index}
                     onPress={() => this.handleVisualizar(item)}
                     status={this.getStatus(item.dataFinal,
                       item.dataInicial, item.horaFinal,
                       item.horaInicial)}
-                    mensagem={item.descricao}
+                    mensagem={this.getStatus(item.dataFinal,
+                      item.dataInicial, item.horaFinal,
+                      item.horaInicial, true)}
                     titulo={item.titulo}
-                  />
+                  />:
+                  null
                 )
 
                 :

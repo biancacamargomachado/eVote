@@ -38,7 +38,7 @@ export default InputEmail;
 InputEmail.propTypes = {
   disabled: PropTypes.bool,
   isRequired: PropTypes.bool,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   max: PropTypes.number,
   multiline: PropTypes.bool,
   onChangeText: PropTypes.func.isRequired,
@@ -49,6 +49,7 @@ InputEmail.propTypes = {
 
 InputEmail.defaultProps = {
   disabled: false,
+  label: '',
   isRequired: false,
   max: undefined,
   multiline: false,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';  
-import { View, Image, TextInput, TouchableOpacity,Text, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity,Text, StyleSheet } from 'react-native';
 import { auth } from '../config';
 import InputEmail from '../components/InputEmail';
 import InputSenha from '../components/InputSenha';
@@ -10,22 +10,22 @@ export default class Login extends Component {
         super(props) 
         this.state = {
           salas: {},
-          email: '',
-          senha: '',
+          email: 'dev@evote.com',
+          senha: '123456',
           errorMessage:''
         }      
     }
 
     handleLogin = () => {
-      const { email, senha } = this.state
+      const { email, senha } = this.state;
       auth
         .signInWithEmailAndPassword(email, senha)
         .then((data) => this.props.navigation.navigate('Inicio'))
-        .catch(error => this.setState({ errorMessage: 'E-mail ou senha incorretos.' }))
+        .catch(error => this.setState({ errorMessage: 'E-mail ou senha incorretos.' }));
     }
 
     static navigationOptions = {
-        title: 'Bem-vind@ ao eVote!',
+        title: 'Bem-vind@ ao eVote!'
     };
 
     render(){
@@ -36,24 +36,27 @@ export default class Login extends Component {
           </View>
           <View style={{flex: 1}}>
             <InputEmail 
-                autoCorrect={false} 
-                keyboardType='email-address'
-                returnKeyType="next"
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email} 
-                placeholder='E-mail' />
+              autoCorrect={false}
+              label=" "
+              keyboardType='email-address'
+              returnKeyType="next"
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email} 
+              placeholder='E-mail'
+            />
 
-              <InputSenha   
-                autoCorrect={false} 
-                returnKeyType="go" 
-                ref={(input)=> this.passwordInput = input} 
-                placeholder='Senha'
-                onChangeText={senha => this.setState({ senha })}
-                value={this.state.senha}/>
+            <InputSenha
+              label=" " 
+              autoCorrect={false} 
+              returnKeyType="go"
+              placeholder='Senha'
+              onChangeText={senha => this.setState({ senha })}
+              value={this.state.senha}
+            />
 
-              <Text style={custom.notice}> 
-                {this.state.errorMessage}
-              </Text>
+            <Text style={custom.notice}> 
+              {this.state.errorMessage}
+            </Text>
 
           </View>
           <View style={{flex: 2, backgroundColor: 'white'}}>

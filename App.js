@@ -14,6 +14,7 @@ import AndamentoVotos from './src/screens/AndamentoVotos';
 import Votacao from './src/screens/Votacao';
 import Votar from './src/screens/Votar';
 import Login from './src/screens/Login';
+import { app } from 'firebase';
 
 const AppNavigator = createStackNavigator(
   {

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
-import moment from 'moment';
 import 'moment/src/locale/pt-br';
-// import 'node_modules/moment/locale/pt-br';
 
 
 
@@ -27,16 +25,7 @@ export default class CardSalaVotacao extends Component {
     }
   };
 
-  calculaDescricaoSala = (data, hora) => {
-
-    moment.updateLocale('pt-br');
-
-    let salaMoment = moment(`${data} ${hora}`, 'DD/MM/YYYY HH:mm')
-    return salaMoment.fromNow();
-    // return "daqui a pouco";
-
-
-  }
+  
 
   render() {
     const { status, mensagem, titulo, onPress } = this.props;
@@ -56,7 +45,7 @@ export default class CardSalaVotacao extends Component {
                 {titulo}
               </Text>
               <Text style={styles.subtitulo} numberOfLines={1} ellipsizeMode='tail'>
-                {this.calculaDescricaoSala('23/05/2019', '19:00')}
+                {mensagem}
               </Text>
             </View>
             <Icon style={styles.icon}
