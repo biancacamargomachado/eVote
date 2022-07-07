@@ -9,7 +9,7 @@
   "dependencies": {
     "expo": "^31.0.0",
     "firebase": "^5.11.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-datepicker": "^1.7.2",
